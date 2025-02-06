@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine's Card 💌</title>
+  <style>
+    /* Allgemeine Einstellungen */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #ffe6f2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    /* Frage über dem Umschlag */
+    .question {
+      font-size: 24px;
+      color: #ff4d79;
+      margin-bottom: 20px;
+    }
+
+    /* Umschlag-Container */
+    .envelope-container {
+      position: relative;
+      width: 150px;
+      height: 100px;
+      cursor: pointer;
+      animation: bounce 1s infinite alternate;
+      -webkit-animation: bounce 1s infinite alternate;
+    }
+
+    /* Umschlag-Körper */
+    .envelope {
+      width: 100%;
+      height: 100%;
+      background: white;
+      border: 3px solid #ff4d79;
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Umschlagklappe (die geschlossene Klappe) */
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: white;
+      border-bottom: 3px solid #ff4d79;
+      /* Form einer Dreiecks-Klappe */
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      -webkit-clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      transition: transform 0.5s ease-in-out;
+      -webkit-transition: -webkit-transform 0.5s ease-in-out;
+      transform-origin: top center;
+      -webkit-transform-origin: top center;
+      transform: rotateX(0deg);
+      -webkit-transform: rotateX(0deg);
+    }
+
+    /* Wenn der Umschlag geöffnet wird, dreht sich die Klappe */
+    .envelope-container.open .flap {
+      transform: rotateX(-180deg);
+      -webkit-transform: rotateX(-180deg);
+    }
+
+    /* Herz im Umschlag */
+    .heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      font-size: 30px;
+      color: #ff4d79;
+      z-index: 1;
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-10px);
+      }
+    }
+    @-webkit-keyframes bounce {
+      0% {
+        -webkit-transform: translateY(0);
+      }
+      100% {
+        -webkit-transform: translateY(-10px);
+      }
+    }
+
+    /* Valentinskarte (wird sichtbar, wenn der Umschlag geöffnet wird) */
+    .card {
+      display: none;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .hidden {
+      display: none;
+      color: #ff4d79;
+      font-size: 20px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: 0.3s;
+      -webkit-transition: 0.3s;
+    }
+
+    #yesButton {
+      background-color: #ff4d79;
+      color: white;
+    }
+
+    #yesButton:hover {
+      background-color: #cc0033;
+    }
+
+    #noButton {
+      background-color: #ffcccc;
+      color: black;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Frage über dem Umschlag -->
+  <div class="question">I Need to ask you something…</div>
+
+  <!-- Umschlag (geschlossen mit Klappe und Herz) -->
+  <div class="envelope-container" id="envelope">
+    <div class="envelope">
+      <div class="flap"></div>
+      <div class="heart">❤️</div>
+    </div>
+  </div>
+
+  <!-- Valentinskarte (wird sichtbar, wenn der Umschlag geöffnet wird) -->
+  <div class="card" id="valentineCard">
+    <h1>💖 Will you be my Valentine? 💖</h1>
+    <div class="buttons">
+      <button id="yesButton">Yes 💕</button>
+      <button id="noButton">No 💔</button>
+    </div>
+    <p id="message" class="hidden">Yay! You made my heart happy! ❤️😊</p>
+    <p id="loveMessage" class="hidden">I love u Zalo ❤️</p>
+  </div>
+
+  <script>
+    // Umschlag öffnen: Beim Klick wird die "open"-Klasse hinzugefügt,
+    // die die Klappe aufklappen lässt, danach wird der Umschlag ausgeblendet und die Karte eingeblendet.
+    document.getElementById("envelope").addEventListener("click", function () {
+      this.classList.add("open");
+      // Stoppe das Hüpfen
+      this.style.animation = "none";
+      this.style.webkitAnimation = "none";
+      // Nach 600ms (wenn die Klappe aufgeklappt ist) Umschlag ausblenden und Karte anzeigen
+      setTimeout(() => {
+        this.style.display = "none";
+        document.getElementById("valentineCard").style.display = "block";
+      }, 600);
+    });
+
+    // "Yes"-Button: Zeigt nacheinander die Nachrichten
+    document.getElementById("yesButton").addEventListener("click", function () {
+      document.getElementById("message").classList.remove("hidden");
+      setTimeout(function () {
+        document.getElementById("loveMessage").classList.remove("hidden");
+      }, 2000);
+    });
+
+    // "No"-Button: Weicht dem Mauszeiger aus
+    document.getElementById("noButton").addEventListener("mouseover", function () {
+      let x = Math.random() * (window.innerWidth - 100);
+      let y = Math.random() * (window.innerHeight - 50);
+      this.style.left = `${x}px`;
+      this.style.top = `${y}px`;
+    });
+  </script>
+</body>
+</html>
+
+     
